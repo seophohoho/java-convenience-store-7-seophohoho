@@ -14,7 +14,7 @@ public class StoreTest {
     @DisplayName("products.md 파일을 읽고, product 객체 생성 테스트")
     void testProducts() throws IOException {
         Store store = new Store();
-
+        store.initProduct();
         List<Product> expected = new ArrayList<>();
         expected.add(new Product("콜라",1000,10,"탄산2+1"));
         expected.add(new Product("콜라",1000,10,"null"));
