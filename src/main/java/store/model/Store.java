@@ -28,4 +28,25 @@ public class Store {
 
         br.close();
     }
+
+    public void initPromotion() throws IOException{
+        Promotion[] promotions = Promotion.values();
+        BufferedReader br = Utils.readFile(FILENAME_PROMOTION);
+        br.readLine();
+
+        String line;
+        int idx=0;
+        while ((line = br.readLine()) != null) {
+            String[] separate = Utils.separateStr(line,SEPARATOR);
+            promotions[idx].setName(separate[0]);
+            promotions[idx].setBuy(Integer.parseInt(separate[1]));
+            promotions[idx].setGet(Integer.parseInt(separate[2]));
+            promotions[idx].setStart(separate[3]);
+            promotions[idx].setEnd(separate[4]);
+            idx++;
+        }
+
+        br.close();
+    }
+
 }
