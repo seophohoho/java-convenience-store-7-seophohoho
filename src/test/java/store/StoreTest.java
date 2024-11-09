@@ -105,6 +105,16 @@ public class StoreTest {
         assertThat(store.isExceedQuantity("콜라",7)).isFalse();
     }
 
+    @Test
+    @DisplayName("오늘 날짜가 특정 기간에 속해 있는지 확인 테스트")
+    void testIsTodayPromotionPeriod() throws IOException {
+        Store store = new Store();
+        store.initPromotion();
+
+        assertThat(store.isTodayPromotionPeriod(Promotion.TWO_PLUS_ONE.getStart(),Promotion.TWO_PLUS_ONE.getEnd())).isTrue();
+        assertThat(store.isTodayPromotionPeriod("2023-10-10","2023-12-25")).isFalse();
+    }
+
     private void setExpectedDefaultOrPromotion(){
         expectedPromotion.put("콜라",new Product("콜라",1000,10,"탄산2+1"));
         expectedDefault.put("콜라",new Product("콜라",1000,10,"null"));
