@@ -66,4 +66,8 @@ public class Store {
         br.close();
     }
 
+    public boolean isExistProduct(String product){
+        return productsDefault.containsKey(product) || productsPromotion.containsKey(product);
+    }
+
 }
