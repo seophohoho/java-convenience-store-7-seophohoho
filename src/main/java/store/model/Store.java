@@ -2,6 +2,7 @@ package store.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import store.Utils;
@@ -79,6 +80,14 @@ public class Store {
         int productPromotionQuantity = productsPromotion.get(product).getQuantity();
 
         return productDefaultQuantity + productPromotionQuantity;
+    }
+
+    public boolean isTodayPromotionPeriod(String startDate, String endDate){
+        LocalDateTime today = Utils.getDateTimeNow();
+        LocalDateTime start = Utils.strToLocalDateTime(startDate);
+        LocalDateTime end = Utils.strToLocalDateTime(endDate);
+
+        return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
     }
 
 }
