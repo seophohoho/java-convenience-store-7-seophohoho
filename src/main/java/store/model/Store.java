@@ -12,7 +12,8 @@ public class Store {
     Map<String,Product> productsDefault = new HashMap<>();
     Map<String,Product> productsPromotion = new HashMap<>();
 
-    private static final String SEPARATOR = ",";
+    private static final String SEPARATOR_COMMA = ",";
+    private static final String SEPARATOR_HYPHEN = "-";
     private static final String FILENAME_PRODUCT = "products.md";
     private static final String FILENAME_PROMOTION = "promotions.md";
     private static final String PROMOTION_NULL = "null";
@@ -30,7 +31,7 @@ public class Store {
 
         String line;
         while ((line = br.readLine()) != null) {
-            setProductsDefaultOrPromotion(Utils.separateStr(line,SEPARATOR));
+            setProductsDefaultOrPromotion(Utils.separateStr(line,SEPARATOR_COMMA));
         }
 
         br.close();
@@ -55,7 +56,7 @@ public class Store {
         String line;
         int idx=0;
         while ((line = br.readLine()) != null) {
-            String[] separate = Utils.separateStr(line,SEPARATOR);
+            String[] separate = Utils.separateStr(line,SEPARATOR_COMMA);
             promotions[idx].setName(separate[0]);
             promotions[idx].setBuy(Integer.parseInt(separate[1]));
             promotions[idx].setGet(Integer.parseInt(separate[2]));
