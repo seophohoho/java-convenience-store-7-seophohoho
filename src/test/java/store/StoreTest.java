@@ -14,42 +14,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StoreTest {
+    Map<String, Product> expectedDefault = new HashMap<>();
+    Map<String, Product> expectedPromotion = new HashMap<>();
+
     @Test
     @DisplayName("products.md 파일을 읽고, product 객체 생성 테스트")
     void testProducts() throws IOException {
         Store store = new Store();
         store.initProduct();
-        Map<String, Product> expectedDefault = new HashMap<>();
-        Map<String, Product> expectedPromotion = new HashMap<>();
 
-        expectedPromotion.put("콜라",new Product("콜라",1000,10,"탄산2+1"));
-        expectedDefault.put("콜라",new Product("콜라",1000,10,"null"));
-
-        expectedPromotion.put("사이다",new Product("사이다",1000,8,"탄산2+1"));
-        expectedDefault.put("사이다",new Product("사이다",1000,7,"null"));
-
-        expectedPromotion.put("오렌지주스",new Product("오렌지주스",1800,9,"MD추천상품"));
-        expectedDefault.put("오렌지주스",new Product("오렌지주스",1800,0,"null"));
-
-        expectedPromotion.put("탄산수",new Product("탄산수",1200,5,"탄산2+1"));
-        expectedDefault.put("탄산수",new Product("탄산수",1200,0,"null"));
-
-        expectedDefault.put("물",new Product("물",500,10,"null"));
-
-        expectedDefault.put("비타민워터",new Product("비타민워터",1500,6,"null"));
-
-        expectedPromotion.put("감자칩",new Product("감자칩",1500,5,"반짝할인"));
-        expectedDefault.put("감자칩",new Product("감자칩",1500,5,"null"));
-
-        expectedPromotion.put("초코바",new Product("초코바",1200,5,"MD추천상품"));
-        expectedDefault.put("초코바",new Product("초코바",1200,5,"null"));
-
-        expectedDefault.put("에너지바",new Product("에너지바",2000,5,"null"));
-
-        expectedDefault.put("정식도시락",new Product("정식도시락",6400,8,"null"));
-
-        expectedPromotion.put("컵라면",new Product("컵라면",1700,1,"MD추천상품"));
-        expectedDefault.put("컵라면",new Product("컵라면",1700,10,"null"));
+        setExpectedDefaultOrPromotion();
 
         for (Map.Entry<String, Product> entry : expectedDefault.entrySet()) {
             String key = entry.getKey();
@@ -96,5 +70,36 @@ public class StoreTest {
             assertEquals(expected.get(idx).get(4),promotion.getEnd());
             idx++;
         }
+    }
+
+    private void setExpectedDefaultOrPromotion(){
+        expectedPromotion.put("콜라",new Product("콜라",1000,10,"탄산2+1"));
+        expectedDefault.put("콜라",new Product("콜라",1000,10,"null"));
+
+        expectedPromotion.put("사이다",new Product("사이다",1000,8,"탄산2+1"));
+        expectedDefault.put("사이다",new Product("사이다",1000,7,"null"));
+
+        expectedPromotion.put("오렌지주스",new Product("오렌지주스",1800,9,"MD추천상품"));
+        expectedDefault.put("오렌지주스",new Product("오렌지주스",1800,0,"null"));
+
+        expectedPromotion.put("탄산수",new Product("탄산수",1200,5,"탄산2+1"));
+        expectedDefault.put("탄산수",new Product("탄산수",1200,0,"null"));
+
+        expectedDefault.put("물",new Product("물",500,10,"null"));
+
+        expectedDefault.put("비타민워터",new Product("비타민워터",1500,6,"null"));
+
+        expectedPromotion.put("감자칩",new Product("감자칩",1500,5,"반짝할인"));
+        expectedDefault.put("감자칩",new Product("감자칩",1500,5,"null"));
+
+        expectedPromotion.put("초코바",new Product("초코바",1200,5,"MD추천상품"));
+        expectedDefault.put("초코바",new Product("초코바",1200,5,"null"));
+
+        expectedDefault.put("에너지바",new Product("에너지바",2000,5,"null"));
+
+        expectedDefault.put("정식도시락",new Product("정식도시락",6400,8,"null"));
+
+        expectedPromotion.put("컵라면",new Product("컵라면",1700,1,"MD추천상품"));
+        expectedDefault.put("컵라면",new Product("컵라면",1700,10,"null"));
     }
 }
