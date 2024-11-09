@@ -70,4 +70,15 @@ public class Store {
         return productsDefault.containsKey(product) || productsPromotion.containsKey(product);
     }
 
+    public boolean isExceedQuantity(String product,int quantity){
+        return getProductQuantity(product) < quantity;
+    }
+
+    public int getProductQuantity(String product){
+        int productDefaultQuantity = productsDefault.get(product).getQuantity();
+        int productPromotionQuantity = productsPromotion.get(product).getQuantity();
+
+        return productDefaultQuantity + productPromotionQuantity;
+    }
+
 }
