@@ -3,17 +3,25 @@ package store.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import store.Utils;
 
 public class Store {
-    List<Product> products = new ArrayList<>();
+    Map<String,Product> productsDefault = new HashMap<>();
+    Map<String,Product> productsPromotion = new HashMap<>();
+
     private static final String SEPARATOR = ",";
     private static final String FILENAME_PRODUCT = "products.md";
     private static final String FILENAME_PROMOTION = "promotions.md";
+    private static final String PROMOTION_NULL = "null";
 
-    public List<Product> getProducts(){
-        return products;
+    public Map<String,Product> getProductDefault(){
+        return productsDefault;
+    }
+    public Map<String,Product> getProductPromotion(){
+        return productsPromotion;
     }
 
     public void initProduct() throws IOException {
@@ -22,11 +30,21 @@ public class Store {
 
         String line;
         while ((line = br.readLine()) != null) {
-            String[] separate = Utils.separateStr(line,SEPARATOR);
-            products.add(new Product(separate[0],Integer.parseInt(separate[1]),Integer.parseInt(separate[2]),separate[3]));
+            setProductsDefaultOrPromotion(Utils.separateStr(line,SEPARATOR));
         }
 
         br.close();
+    }
+
+    public void setProductsDefaultOrPromotion(String[] rows){
+        Product newProduct = new Product(rows[0],Integer.parseInt(rows[1]),Integer.parseInt(rows[2]),rows[3]);
+
+        if(!rows[3].equals(PROMOTION_NULL)){
+            productsPromotion.put(rows[0],newProduct);
+            productsDefault.put(rows[0],new Product(rows[0],Integer.parseInt(rows[1]),0,PROMOTION_NULL));
+            return;
+        }
+        productsDefault.put(rows[0],newProduct);
     }
 
     public void initPromotion() throws IOException{
