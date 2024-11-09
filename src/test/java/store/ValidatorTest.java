@@ -2,6 +2,8 @@ package store;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import store.model.Validator;
 
@@ -50,6 +52,9 @@ public class ValidatorTest {
 
         assertThatThrownBy(() -> validator.orderValidate("[콜라-dwdwdw10 ]"))
                 .isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(() -> validator.orderValidate("[콜라-01]"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -65,5 +70,16 @@ public class ValidatorTest {
 
         assertThatThrownBy(() -> validator.orderValidate("[콜라-10],[사이다-10],[비타민워터]"))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("물품 주문 올바른 입력 테스트")
+    void testOrderValidate_Correct(){
+        Validator validator = new Validator();
+
+        assertThat(validator.orderValidate("[water-10]")).isTrue();
+        assertThat(validator.orderValidate("[콜라-10]")).isTrue();
+        assertThat(validator.orderValidate("[콜라-10],[사이다-10]")).isTrue();
+        assertThat(validator.orderValidate("[콜라-10],[사이다-10],[물-3]")).isTrue();
     }
 }
