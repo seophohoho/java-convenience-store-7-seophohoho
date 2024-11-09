@@ -72,6 +72,22 @@ public class StoreTest {
         }
     }
 
+    @Test
+    @DisplayName("존재하는 상품인지 테스트")
+    void testIsExistProduct() throws IOException {
+        Store store = new Store();
+
+        store.initProduct();
+        setExpectedDefaultOrPromotion();
+
+        assertThat(store.isExistProduct("콜라")).isTrue();
+        assertThat(store.isExistProduct("물")).isTrue();
+        assertThat(store.isExistProduct("사이다")).isTrue();
+        assertThat(store.isExistProduct("정식도시락")).isTrue();
+        assertThat(store.isExistProduct("코카콜라 제로")).isFalse();
+        assertThat(store.isExistProduct("뿌링클")).isFalse();
+    }
+
     private void setExpectedDefaultOrPromotion(){
         expectedPromotion.put("콜라",new Product("콜라",1000,10,"탄산2+1"));
         expectedDefault.put("콜라",new Product("콜라",1000,10,"null"));
