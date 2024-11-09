@@ -88,6 +88,23 @@ public class StoreTest {
         assertThat(store.isExistProduct("뿌링클")).isFalse();
     }
 
+    @Test
+    @DisplayName("해당 상품의 재고 초과 테스트")
+    void testIsExceedQuantity() throws IOException {
+        Store store = new Store();
+
+        store.initProduct();
+        setExpectedDefaultOrPromotion();
+
+        assertThat(store.isExceedQuantity("콜라",200)).isTrue();
+        assertThat(store.isExceedQuantity("콜라",20)).isFalse();
+        assertThat(store.isExceedQuantity("콜라",5)).isFalse();
+
+        assertThat(store.isExceedQuantity("사이다",16)).isTrue();
+        assertThat(store.isExceedQuantity("콜라",10)).isFalse();
+        assertThat(store.isExceedQuantity("콜라",7)).isFalse();
+    }
+
     private void setExpectedDefaultOrPromotion(){
         expectedPromotion.put("콜라",new Product("콜라",1000,10,"탄산2+1"));
         expectedDefault.put("콜라",new Product("콜라",1000,10,"null"));
