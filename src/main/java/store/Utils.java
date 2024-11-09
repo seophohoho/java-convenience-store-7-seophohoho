@@ -19,4 +19,8 @@ public class Utils {
     public static String[] separateStr(String str,String separator) {
         return str.split(separator);
     }
+
+    public static String removeFirstAndLastStr(String str){
+        return str.substring(1,str.length()-1);
+    }
 }
