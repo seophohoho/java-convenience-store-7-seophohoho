@@ -114,6 +114,21 @@ public class Store {
         }
     }
 
+    public Product getProductDefault(String product){
+        return productsDefault.get(product);
+    }
+
+    public Product getProductPromotion(String product){
+        return productsPromotion.get(product);
+    }
+
+    public void processOrders(){
+        for(Order order: orders){
+            Product productDefault = getProductDefault(order.getProduct());
+            Product productPromotion = getProductPromotion(order.getProduct());
+        }
+    }
+
     public List<Order> getOrders() {
         return orders;
     }
