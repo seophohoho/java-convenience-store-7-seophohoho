@@ -103,36 +103,12 @@ public class Store {
         }
     }
 
-    public void checkOrders(){
-        for(Order order: orders){
-            if(!isExistProduct(order.getProduct())){
-                Error.reject(Error.INVALID_PRODUCT_MSG);
-            }
-            if(isExceedQuantity(order.getProduct(),order.getQuantity())){
-                Error.reject(Error.INVALID_QUANTITY_MSG);
-            }
-        }
-    }
-
     public Product getProductDefault(String product){
         return productsDefault.get(product);
     }
 
     public Product getProductPromotion(String product){
         return productsPromotion.get(product);
-    }
-
-    public void processOrders(){
-        for(Order order: orders){
-            Product productDefault = getProductDefault(order.getProduct());
-            Product productPromotion = getProductPromotion(order.getProduct());
-            boolean checkPromotionPeriod = false;
-
-            if(productPromotion != null){
-                Promotion promotion = Utils.getPromotion(productPromotion.getPromotion());
-                checkPromotionPeriod = isTodayPromotionPeriod(promotion.getStart(),promotion.getEnd());
-            }
-        }
     }
 
     public List<Order> getOrders() {
