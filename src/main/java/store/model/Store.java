@@ -97,7 +97,7 @@ public class Store {
         String[] separateOrder = Utils.separateStr(orderStrs,SEPARATOR_COMMA);
 
         for(String orderStr: separateOrder){
-            String[] separate = Utils.separateStr(orderStr,SEPARATOR_HYPHEN);
+            String[] separate = Utils.separateStr(Utils.removeFirstAndLastStr(orderStr),SEPARATOR_HYPHEN);
             orders.add(new Order(separate[0],Integer.parseInt(separate[1]),0,0));
         }
     }
