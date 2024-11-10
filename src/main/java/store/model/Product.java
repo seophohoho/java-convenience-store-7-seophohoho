@@ -44,4 +44,15 @@ public class Product {
     public void setPromotion(String promotion) {
         this.promotion = promotion;
     }
+
+    public void reduceQuantity(int quantity){
+        int originQuantity = getQuantity();
+        int resultQuantity = originQuantity - quantity;
+
+        setQuantity(resultQuantity);
+
+        if(resultQuantity < 0){
+            setQuantity(0);
+        }
+    }
 }
