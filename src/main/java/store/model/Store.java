@@ -126,6 +126,12 @@ public class Store {
         for(Order order: orders){
             Product productDefault = getProductDefault(order.getProduct());
             Product productPromotion = getProductPromotion(order.getProduct());
+            boolean checkPromotionPeriod = false;
+
+            if(productPromotion != null){
+                Promotion promotion = Promotion.valueOf(productPromotion.getPromotion());
+                checkPromotionPeriod = isTodayPromotionPeriod(promotion.getStart(),promotion.getEnd());
+            }
         }
     }
 
