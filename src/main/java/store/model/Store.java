@@ -129,7 +129,7 @@ public class Store {
             boolean checkPromotionPeriod = false;
 
             if(productPromotion != null){
-                Promotion promotion = Promotion.valueOf(productPromotion.getPromotion());
+                Promotion promotion = Utils.getPromotion(productPromotion.getPromotion());
                 checkPromotionPeriod = isTodayPromotionPeriod(promotion.getStart(),promotion.getEnd());
             }
         }
