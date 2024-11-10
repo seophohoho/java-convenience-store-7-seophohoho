@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import store.Utils;
+import store.view.Error;
 
 public class Store {
     List<Order> orders = new ArrayList<>();
@@ -99,6 +100,17 @@ public class Store {
         for(String orderStr: separateOrder){
             String[] separate = Utils.separateStr(Utils.removeFirstAndLastStr(orderStr),SEPARATOR_HYPHEN);
             orders.add(new Order(separate[0],Integer.parseInt(separate[1]),0,0));
+        }
+    }
+
+    public void checkOrders(){
+        for(Order order: orders){
+            if(!isExistProduct(order.getProduct())){
+                Error.reject(Error.INVALID_PRODUCT_MSG);
+            }
+            if(isExceedQuantity(order.getProduct(),order.getQuantity())){
+                Error.reject(Error.INVALID_QUANTITY_MSG);
+            }
         }
     }
 
