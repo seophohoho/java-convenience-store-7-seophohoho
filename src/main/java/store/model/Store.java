@@ -102,4 +102,7 @@ public class Store {
         }
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
 }

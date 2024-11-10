@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.model.Order;
 import store.model.Product;
 import store.model.Promotion;
 import store.model.Store;
@@ -113,6 +114,24 @@ public class StoreTest {
 
         assertThat(store.isTodayPromotionPeriod(Promotion.TWO_PLUS_ONE.getStart(),Promotion.TWO_PLUS_ONE.getEnd())).isTrue();
         assertThat(store.isTodayPromotionPeriod("2023-10-10","2023-12-25")).isFalse();
+    }
+
+    @Test
+    @DisplayName("주문 목록 저장하기 테스트")
+    void testTakeOrder(){
+        Store store = new Store();
+        List<Order> expected = new ArrayList<>();
+
+        store.takeOrder("[콜라-3],[에너지바-5],[물-3]");
+
+        expected.add(new Order("콜라",3,0,0));
+        expected.add(new Order("에너지바",5,0,0));
+        expected.add(new Order("물",3,0,0));
+
+        assertThat(store.getOrders())
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expected);
+
     }
 
     private void setExpectedDefaultOrPromotion(){
