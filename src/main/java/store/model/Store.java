@@ -3,11 +3,14 @@ package store.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import store.Utils;
 
 public class Store {
+    List<Order> orders = new ArrayList<>();
     Map<String,Product> productsDefault = new HashMap<>();
     Map<String,Product> productsPromotion = new HashMap<>();
 
@@ -88,6 +91,15 @@ public class Store {
         LocalDateTime end = Utils.strToLocalDateTime(endDate);
 
         return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
+    }
+
+    public void takeOrder(String orderStrs){
+        String[] separateOrder = Utils.separateStr(orderStrs,SEPARATOR_COMMA);
+
+        for(String orderStr: separateOrder){
+            String[] separate = Utils.separateStr(orderStr,SEPARATOR_HYPHEN);
+            orders.add(new Order(separate[0],Integer.parseInt(separate[1]),0,0));
+        }
     }
 
 }
