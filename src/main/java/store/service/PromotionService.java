@@ -1,6 +1,6 @@
 package store.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import store.model.Order;
 import store.model.Promotion;
 import store.model.PromotionProduct;
@@ -10,47 +10,44 @@ import store.util.DateUtil;
 public class PromotionService {
     private Store store;
 
-    public PromotionService(Store store){
+    public PromotionService(Store store) {
         this.store = store;
     }
 
-    public boolean isTodayPromotionPeriod(String startDate, String endDate){
-        LocalDateTime today = DateUtil.getDateTimeNow();
-        LocalDateTime start = DateUtil.strToLocalDateTime(startDate);
-        LocalDateTime end = DateUtil.strToLocalDateTime(endDate);
+    public int calculatePromotionBenefit(Order order) {
+        PromotionProduct promotionProduct = store.getTargetProductPromotion(order.getProduct());
+        if (promotionProduct == null) {
+            return 0;
+        }
 
-        return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
+        Promotion promotion = getPromotion(promotionProduct.getPromotion());
+        if (isTodayPromotionPeriod(promotion.getStart(), promotion.getEnd())) {
+            return (order.getQuantity() / promotion.getBuy() + promotion.getGet()) * promotion.getGet();
+        }
+        return 0;
     }
 
-    public Promotion getPromotion(String name){
-        Promotion ret = Promotion.TWO_PLUS_ONE;
-        for(Promotion promotion : Promotion.values()){
-            if(promotion.getName().equals(name)){
-                ret = promotion;
+    public int calculateDiscount(Order order, int benefit) {
+        PromotionProduct promotionProduct = store.getTargetProductPromotion(order.getProduct());
+        if (promotionProduct == null || benefit == 0) {
+            return 0;
+        }
+        return promotionProduct.getPrice() * benefit;
+    }
+
+    public Promotion getPromotion(String promotionName) {
+        for (Promotion promotion : Promotion.values()) {
+            if (promotion.getName().equals(promotionName)) {
+                return promotion;
             }
         }
-        return ret;
+        return Promotion.EMPTY;
     }
 
-    public int getBenefit(Order order, Promotion promotion){
-        return order.getQuantity() % calcPromotionBuyGet(promotion);
+    public boolean isTodayPromotionPeriod(String startDate, String endDate) {
+        LocalDate today = LocalDate.now();
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return !today.isBefore(start) && !today.isAfter(end);
     }
-
-    public boolean compareOrderPromotion(Order order, PromotionProduct product){
-        return order.getQuantity() > product.getQuantity();
-    }
-
-    public int getNotApplyPromotionValue(Order order, Promotion promotion, PromotionProduct product){
-        int val1 = (product.getQuantity()/promotion.getBuy())*promotion.getBuy();
-        return order.getQuantity() - val1;
-    }
-
-    private int calcPromotionBuyGet(Promotion promotion){
-        return promotion.getBuy() + promotion.getGet();
-    }
-
-    public int calcPromotionBenefit(Promotion promotion, PromotionProduct promotionProduct){
-        return promotionProduct.getQuantity()/calcPromotionBuyGet(promotion);
-    }
-
 }

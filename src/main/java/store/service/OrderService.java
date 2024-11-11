@@ -50,8 +50,18 @@ public class OrderService {
     }
 
     private int getProductQuantity(String product){
-        int productDefaultQuantity = store.getProducts().get(product).getQuantity();
-        int productPromotionQuantity = store.getPromotionProducts().get(product).getQuantity();
+        int productDefaultQuantity = 0;
+        int productPromotionQuantity = 0;
+        Product productDefault = store.getTargetProductDefault(product);
+        PromotionProduct productPromotion = store.getTargetProductPromotion(product);
+
+        if(productDefault != null){
+            productDefaultQuantity = productDefault.getQuantity();
+        }
+
+        if(productPromotion != null){
+            productPromotionQuantity = productPromotion.getQuantity();
+        }
 
         return productDefaultQuantity + productPromotionQuantity;
     }
@@ -68,6 +78,23 @@ public class OrderService {
             target.reduceQuantity(1);
             order.setAmount(order.getAmount()+target.getPrice());
         }
+    }
+
+    public void processOrder(Order order, int benefit) {
+        Product product = store.getTargetProductDefault(order.getProduct());
+        int quantityToProcess = order.getQuantity() - (benefit / product.getPrice());
+
+        product.reduceQuantity(quantityToProcess);
+        order.setAmount(product.getPrice() * quantityToProcess);
+        order.setBenefit(benefit);
+    }
+
+    public int calculateTotalAmount() {
+        int totalAmount = 0;
+        for (Order order : orders) {
+            totalAmount += order.getAmount();
+        }
+        return totalAmount;
     }
 
     public List<Order> getOrders() {

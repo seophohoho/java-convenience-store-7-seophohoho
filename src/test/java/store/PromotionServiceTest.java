@@ -22,7 +22,7 @@ public class PromotionServiceTest {
         Promotion promotion = Promotion.TWO_PLUS_ONE;
         System.out.print(promotion.getBuy());
 
-        assertEquals(1,promotionService.getBenefit(new Order("콜라",10),promotion));
+        assertEquals(1,promotionService.calculatePromotionBenefit(new Order("콜라",10)));
 
     }
 }
