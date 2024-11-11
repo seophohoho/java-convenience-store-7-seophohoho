@@ -49,4 +49,8 @@ public class PromotionService {
         return promotion.getBuy() + promotion.getGet();
     }
 
+    public int calcPromotionBenefit(Promotion promotion, PromotionProduct promotionProduct){
+        return promotionProduct.getQuantity()/calcPromotionBuyGet(promotion);
+    }
+
 }

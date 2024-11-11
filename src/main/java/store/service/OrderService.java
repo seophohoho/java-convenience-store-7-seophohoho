@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import store.model.Order;
+import store.model.Product;
+import store.model.PromotionProduct;
 import store.model.Store;
 import store.util.StringUtil;
 import store.view.Error;
@@ -52,6 +54,20 @@ public class OrderService {
         int productPromotionQuantity = store.getPromotionProducts().get(product).getQuantity();
 
         return productDefaultQuantity + productPromotionQuantity;
+    }
+
+    public void process(Order order,PromotionProduct promotionProduct, int benefit){
+        for(int i=0;i<order.getQuantity()-benefit;i++){
+            if(promotionProduct != null || promotionProduct.getQuantity() == 0){
+                PromotionProduct target = store.getTargetProductPromotion(order.getProduct());
+                target.reduceQuantity(1);
+                order.setAmount(order.getAmount()+target.getPrice());
+                continue;
+            }
+            Product target = store.getTargetProductDefault(order.getProduct());
+            target.reduceQuantity(1);
+            order.setAmount(order.getAmount()+target.getPrice());
+        }
     }
 
     public List<Order> getOrders() {

@@ -33,6 +33,7 @@ public class Controller {
             try{
                 order();
                 checkOrders();
+                processOrders();
 
             }catch(IllegalArgumentException e){}
         }
@@ -65,6 +66,9 @@ public class Controller {
         List<Order> orders = orderService.getOrders();
         for(Order order: orders){
             int result1 = checkPromotion_1(order);
+            int benefit = 0;
+            PromotionProduct targetProductPromotion = store.getTargetProductPromotion(order.getProduct());
+            Promotion promotion = promotionService.getPromotion(targetProductPromotion.getName());
             if(result1 > 0){
                 order.setQuantity(order.getQuantity()+result1);
             }
@@ -72,6 +76,10 @@ public class Controller {
             if(result1 == 0){
                 result2 = checkPromotion_2(order);
             }
+            if(result2){
+                benefit = promotionService.calcPromotionBenefit(promotion,targetProductPromotion);
+            }
+            orderService.process(order,targetProductPromotion,benefit);
         }
     }
 
