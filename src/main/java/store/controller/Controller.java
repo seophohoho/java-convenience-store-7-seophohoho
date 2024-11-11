@@ -94,7 +94,7 @@ public class Controller {
     }
 
     private boolean confirmAdditionalOrder() {
-        String input = Input.confirmAdditionalOrder();
+        String input = Input.againOrder();
         return input.equalsIgnoreCase("Y");
     }
 }
