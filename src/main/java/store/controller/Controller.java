@@ -68,7 +68,10 @@ public class Controller {
             if(result1 > 0){
                 order.setQuantity(order.getQuantity()+result1);
             }
-
+            boolean result2 = false;
+            if(result1 == 0){
+                result2 = checkPromotion_2(order);
+            }
         }
     }
 
@@ -83,6 +86,25 @@ public class Controller {
             return hasPromotionBenefit(order,promotion);
         }
         return 0;
+    }
+
+    public boolean checkPromotion_2(Order order){
+        PromotionProduct targetProductPromotion = store.getTargetProductPromotion(order.getProduct());
+        boolean check = promotionService.compareOrderPromotion(order,targetProductPromotion);
+        if(check){
+            Promotion promotion = promotionService.getPromotion(targetProductPromotion.getName());
+            int value = promotionService.getNotApplyPromotionValue(order,promotion,targetProductPromotion);
+            return hasNotApplyPromotion(order,value);
+        }
+        return false;
+    }
+
+    public boolean hasNotApplyPromotion(Order order, int value){
+        String input = Input.promotionNotApplyChoice(order.getProduct(),value);
+        if(input.equals("Y")){
+            return true;
+        }
+        return false;
     }
 
     public int hasPromotionBenefit(Order order, Promotion promotion){

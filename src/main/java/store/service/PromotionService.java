@@ -40,6 +40,11 @@ public class PromotionService {
         return order.getQuantity() > product.getQuantity();
     }
 
+    public int getNotApplyPromotionValue(Order order, Promotion promotion, PromotionProduct product){
+        int val1 = (product.getQuantity()/promotion.getBuy())*promotion.getBuy();
+        return order.getQuantity() - val1;
+    }
+
     private int calcPromotionBuyGet(Promotion promotion){
         return promotion.getBuy() + promotion.getGet();
     }
