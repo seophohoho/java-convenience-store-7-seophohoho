@@ -9,4 +9,9 @@ public class Input {
         System.out.print(ORDER_INPUT_TITLE);
         return Console.readLine();
     }
+
+    public static String promotionBenefitChoice(String product, int remainder){
+        System.out.printf("현재 %s은(는) %d개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)%n", product, remainder);
+        return Console.readLine();
+    }
 }
