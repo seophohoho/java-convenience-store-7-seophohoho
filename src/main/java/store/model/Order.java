@@ -6,11 +6,11 @@ public class Order {
     private int amount;
     private int benefit;
 
-    public Order(String product, int quantity, int amount, int benefit){
+    public Order(String product, int quantity){
         this.product = product;
         this.quantity = quantity;
-        this.amount = amount;
-        this.benefit = benefit;
+        this.amount = 0;
+        this.benefit = 0;
     }
 
     public String getProduct() {
@@ -19,6 +19,10 @@ public class Order {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getAmount() {

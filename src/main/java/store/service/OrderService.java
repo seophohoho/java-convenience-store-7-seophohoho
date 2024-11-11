@@ -1,11 +1,9 @@
 package store.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import store.Utils;
 import store.model.Order;
 import store.model.Store;
 import store.util.StringUtil;
@@ -27,7 +25,7 @@ public class OrderService {
 
         for(String orderStr: separateOrder){
             String[] separate = StringUtil.separate(StringUtil.removeFirstAndLast(orderStr),StringUtil.SEPARATOR_HYPHEN);
-            orders.add(new Order(separate[0],Integer.parseInt(separate[1]),0,0));
+            orders.add(new Order(separate[0],Integer.parseInt(separate[1])));
         }
     }
 
@@ -55,15 +53,7 @@ public class OrderService {
 
         return productDefaultQuantity + productPromotionQuantity;
     }
-//
-//    public boolean isTodayPromotionPeriod(String startDate, String endDate){
-//        LocalDateTime today = Utils.getDateTimeNow();
-//        LocalDateTime start = Utils.strToLocalDateTime(startDate);
-//        LocalDateTime end = Utils.strToLocalDateTime(endDate);
-//
-//        return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
-//    }
-//
+
     public List<Order> getOrders() {
         return orders;
     }

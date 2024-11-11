@@ -1,6 +1,7 @@
 package store.model;
 
 public enum Promotion {
+    EMPTY("",0,0,"0000-00-00","0000-00-00"),
     TWO_PLUS_ONE("",0,0,"0000-00-00","0000-00-00"),
     MD_RECOMMEND("",0,0,"0000-00-00","0000-00-00"),
     SHINY_SALE("",0,0,"0000-00-00","0000-00-00");

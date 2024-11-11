@@ -36,11 +36,11 @@ public class Store {
         int idx=0;
         while ((line = br.readLine()) != null) {
             String[] separate = StringUtil.separate(line,StringUtil.SEPARATOR_COMMA);
-            promotions[idx].setName(separate[0]);
-            promotions[idx].setBuy(Integer.parseInt(separate[1]));
-            promotions[idx].setGet(Integer.parseInt(separate[2]));
-            promotions[idx].setStart(separate[3]);
-            promotions[idx].setEnd(separate[4]);
+            promotions[idx+1].setName(separate[0]);
+            promotions[idx+1].setBuy(Integer.parseInt(separate[1]));
+            promotions[idx+1].setGet(Integer.parseInt(separate[2]));
+            promotions[idx+1].setStart(separate[3]);
+            promotions[idx+1].setEnd(separate[4]);
             idx++;
         }
 
