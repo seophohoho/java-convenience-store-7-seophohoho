@@ -3,63 +3,42 @@ package store.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import store.Utils;
-import store.view.Error;
+import store.util.FileUtil;
+import store.util.StringUtil;
 
 public class Store {
-
-    Map<String,Product> productsDefault = new HashMap<>();
-    Map<String,Product> productsPromotion = new HashMap<>();
-
-    private static final String SEPARATOR_COMMA = ",";
-    private static final String SEPARATOR_HYPHEN = "-";
     private static final String FILENAME_PRODUCT = "products.md";
     private static final String FILENAME_PROMOTION = "promotions.md";
     private static final String PROMOTION_NULL = "null";
 
-    public Map<String,Product> getProductDefault(){
-        return productsDefault;
-    }
-    public Map<String,Product> getProductPromotion(){
-        return productsPromotion;
-    }
+    Map<String,Product> products = new LinkedHashMap<>();
+    Map<String,PromotionProduct> promotionProducts = new LinkedHashMap<>();
 
     public void initProduct() throws IOException {
-        BufferedReader br = Utils.readFile(FILENAME_PRODUCT);
+        BufferedReader br = FileUtil.read(FILENAME_PRODUCT);
         br.readLine();
 
         String line;
         while ((line = br.readLine()) != null) {
-            setProductsDefaultOrPromotion(Utils.separateStr(line,SEPARATOR_COMMA));
+            setProductsDefaultOrPromotion(StringUtil.separate(line,StringUtil.SEPARATOR_COMMA));
         }
 
         br.close();
     }
 
-    public void setProductsDefaultOrPromotion(String[] rows){
-        Product newProduct = new Product(rows[0],Integer.parseInt(rows[1]),Integer.parseInt(rows[2]),rows[3]);
-
-        if(!rows[3].equals(PROMOTION_NULL)){
-            productsPromotion.put(rows[0],newProduct);
-            productsDefault.put(rows[0],new Product(rows[0],Integer.parseInt(rows[1]),0,PROMOTION_NULL));
-            return;
-        }
-        productsDefault.put(rows[0],newProduct);
-    }
-
     public void initPromotion() throws IOException{
         Promotion[] promotions = Promotion.values();
-        BufferedReader br = Utils.readFile(FILENAME_PROMOTION);
+        BufferedReader br = FileUtil.read(FILENAME_PROMOTION);
         br.readLine();
 
         String line;
         int idx=0;
         while ((line = br.readLine()) != null) {
-            String[] separate = Utils.separateStr(line,SEPARATOR_COMMA);
+            String[] separate = StringUtil.separate(line,StringUtil.SEPARATOR_COMMA);
             promotions[idx].setName(separate[0]);
             promotions[idx].setBuy(Integer.parseInt(separate[1]));
             promotions[idx].setGet(Integer.parseInt(separate[2]));
@@ -71,38 +50,39 @@ public class Store {
         br.close();
     }
 
-    public boolean isExistProduct(String product){
-        return productsDefault.containsKey(product) || productsPromotion.containsKey(product);
+    public Map<String,Product> getProducts(){
+        return products;
     }
 
-    public boolean isExceedQuantity(String product,int quantity){
-        return getProductQuantity(product) < quantity;
+    public Map<String,PromotionProduct> getPromotionProducts(){
+        return promotionProducts;
     }
 
-    public int getProductQuantity(String product){
-        int productDefaultQuantity = productsDefault.get(product).getQuantity();
-        int productPromotionQuantity = productsPromotion.get(product).getQuantity();
-
-        return productDefaultQuantity + productPromotionQuantity;
+    public Product getTargetProductDefault(String product){
+        return products.get(product);
     }
 
-    public boolean isTodayPromotionPeriod(String startDate, String endDate){
-        LocalDateTime today = Utils.getDateTimeNow();
-        LocalDateTime start = Utils.strToLocalDateTime(startDate);
-        LocalDateTime end = Utils.strToLocalDateTime(endDate);
-
-        return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
+    public Product getTargetProductPromotion(String product){
+        return promotionProducts.get(product);
     }
 
+    public void setProductsDefaultOrPromotion(String[] rows){
+        if(rows[3].equals(PROMOTION_NULL)){
+            products.put(rows[0],createProduct(rows[0],Integer.parseInt(rows[1]),Integer.parseInt(rows[2])));
+        }
 
-
-    public Product getProductDefault(String product){
-        return productsDefault.get(product);
+        if(!rows[3].equals(PROMOTION_NULL)){
+            promotionProducts.put(rows[0],createPromotionProduct(rows[0],Integer.parseInt(rows[1]),Integer.parseInt(rows[2]),rows[3]));
+            products.put(rows[0],createProduct(rows[0],Integer.parseInt(rows[1]),0));
+        }
     }
 
-    public Product getProductPromotion(String product){
-        return productsPromotion.get(product);
+    public Product createProduct(String name, int price, int quantity){
+        return new Product(name,price,quantity);
     }
 
+    public PromotionProduct createPromotionProduct(String name, int price, int quantity, String promotion){
+        return new PromotionProduct(name,price,quantity,promotion);
+    }
 
 }

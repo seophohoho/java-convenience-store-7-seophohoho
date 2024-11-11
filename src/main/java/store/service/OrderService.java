@@ -1,16 +1,29 @@
 package store.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import store.Utils;
 import store.model.Order;
+import store.model.Store;
 import store.util.StringUtil;
+import store.view.Error;
 
 public class OrderService {
+    private static final String ORDER_PATTERN = "\\[([가-힣]*|[[a-zA-Z]]*+)-([1-9][0-9]*+)](,\\[([가-힣]*|[[a-zA-Z]]*+)-([1-9][0-9]*+)])*";
+    private Store store;
     List<Order> orders = new ArrayList<>();
+
+    public OrderService(Store store){
+        this.store = store;
+    }
 
     public void takeOrder(String orderStrs){
         String[] separateOrder = StringUtil.separate(orderStrs,StringUtil.SEPARATOR_COMMA);
+
+        validate(orderStrs);
 
         for(String orderStr: separateOrder){
             String[] separate = StringUtil.separate(StringUtil.removeFirstAndLast(orderStr),StringUtil.SEPARATOR_HYPHEN);
@@ -18,6 +31,39 @@ public class OrderService {
         }
     }
 
+    public void validate(String input){
+        Pattern patternOrder = Pattern.compile(ORDER_PATTERN);
+        Matcher matcherOrder = patternOrder.matcher(input);
+
+        if(!matcherOrder.matches()){
+            Error.printError(Error.INVALID_INPUT_MSG);
+
+        }
+    }
+
+    public boolean isExistProducts(String product){
+        return store.getProducts().containsKey(product) || store.getPromotionProducts().containsKey(product);
+    }
+
+    public boolean isExceedQuantity(String product,int quantity){
+        return getProductQuantity(product) < quantity;
+    }
+
+    private int getProductQuantity(String product){
+        int productDefaultQuantity = store.getProducts().get(product).getQuantity();
+        int productPromotionQuantity = store.getPromotionProducts().get(product).getQuantity();
+
+        return productDefaultQuantity + productPromotionQuantity;
+    }
+//
+//    public boolean isTodayPromotionPeriod(String startDate, String endDate){
+//        LocalDateTime today = Utils.getDateTimeNow();
+//        LocalDateTime start = Utils.strToLocalDateTime(startDate);
+//        LocalDateTime end = Utils.strToLocalDateTime(endDate);
+//
+//        return today.equals(start) || today.equals(end) || (today.isAfter(start) && today.isBefore(end));
+//    }
+//
     public List<Order> getOrders() {
         return orders;
     }

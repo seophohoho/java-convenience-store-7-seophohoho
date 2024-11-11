@@ -7,7 +7,8 @@ public class Error {
     public static final String INVALID_QUANTITY_MSG = "재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.";
     public static final String INVALID_ETC_MSG = "잘못된 입력입니다. 다시 입력해 주세요.";
 
-    public static void reject(String msg) {
-        throw new IllegalArgumentException(BASIC_MSG + msg);
+    public static void printError(String msg) {
+        System.out.println(BASIC_MSG + msg);
+        throw new IllegalArgumentException();
     }
 }
