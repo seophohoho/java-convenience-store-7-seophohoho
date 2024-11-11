@@ -2,11 +2,8 @@ package store.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import store.Utils;
 import store.util.FileUtil;
 import store.util.StringUtil;
 
@@ -62,7 +59,7 @@ public class Store {
         return products.get(product);
     }
 
-    public Product getTargetProductPromotion(String product){
+    public PromotionProduct getTargetProductPromotion(String product){
         return promotionProducts.get(product);
     }
 
