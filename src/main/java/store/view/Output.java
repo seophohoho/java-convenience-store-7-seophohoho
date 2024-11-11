@@ -12,7 +12,7 @@ public class Output {
     private static final String PRINT_PRODUCTS_1 = "- %s %s원 %s개 %s%n";
     private static final String PRINT_PRODUCTS_2 = "- %s %s원 재고 없음%n";
     private static final String PRINT_PRODUCTS_3 = "- %s %s원 %s개%n";
-    private static final String PRINT_RECEIPT_TITLE = "==============W 편의점================";
+    private static final String PRINT_RECEIPT_TITLE = "\n==============W 편의점================";
     private static final String PRINT_RECEIPT_1 = "상품명\t\t수량\t\t금액";
     private static final String PRINT_RECEIPT_2 = "%s\t\t%-1d\t\t%-,1d%n";
     private static final String PRINT_RECEIPT_3 = "=============증  정=============";
