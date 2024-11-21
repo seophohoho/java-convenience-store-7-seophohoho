@@ -28,15 +28,15 @@ public class StoreTest {
         store.setPromotion(promotion2.getName(),promotion2);
         store.setPromotion(promotion3.getName(),promotion3);
 
-        assertThat(store.promotions.get("탄산2+1"))
+        assertThat(store.getPromotions().get("탄산2+1"))
                 .usingRecursiveComparison()
                 .isEqualTo(expected.get("탄산2+1"));
 
-        assertThat(store.promotions.get("MD추천상품"))
+        assertThat(store.getPromotions().get("MD추천상품"))
                 .usingRecursiveComparison()
                 .isEqualTo(expected.get("MD추천상품"));
 
-        assertThat(store.promotions.get("반짝할인"))
+        assertThat(store.getPromotions().get("반짝할인"))
                 .usingRecursiveComparison()
                 .isEqualTo(expected.get("반짝할인"));
     }
@@ -52,11 +52,11 @@ public class StoreTest {
         store.setDefaultOrPromotionProducts(List.of("콜라","1000","10","탄산2+1"));
         store.setDefaultOrPromotionProducts(List.of("콜라","1000","10","null"));
 
-        assertThat(store.defaultProducts.get("콜라"))
+        assertThat(store.getDefaultProducts().get("콜라"))
                 .usingRecursiveComparison()
                 .isEqualTo(expectedDefaultProduct);
 
-        assertThat(store.promotionProducts.get("콜라"))
+        assertThat(store.getPromotionProducts().get("콜라"))
                 .usingRecursiveComparison()
                 .isEqualTo(expectedPromotionProduct);
     }

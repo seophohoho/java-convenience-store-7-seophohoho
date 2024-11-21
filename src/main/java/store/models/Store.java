@@ -9,9 +9,9 @@ public class Store {
     private static final String DEFAULT = "default";
     private static final String PROMOTION = "promotion";
 
-    Map<String, ProductDefault> defaultProducts = new LinkedHashMap<>();
-    Map<String, ProductPromotion> promotionProducts = new LinkedHashMap<>();
-    Map<String, Promotion> promotions = new HashMap<>();
+    private Map<String, ProductDefault> defaultProducts = new LinkedHashMap<>();
+    private Map<String, ProductPromotion> promotionProducts = new LinkedHashMap<>();
+    private Map<String, Promotion> promotions = new HashMap<>();
 
     public Promotion createPromotion(List<String> lines){
         String name = lines.get(0);
@@ -43,8 +43,6 @@ public class Store {
             promotionProducts.put(name,createPromotionProduct(name,price,stock,type));
             defaultProducts.put(name,createDefaultProduct(name,price,0));
         }
-
-
     }
 
     public ProductDefault createDefaultProduct(String name, int price, int stock){
@@ -55,5 +53,15 @@ public class Store {
         return new ProductPromotion(name,price,stock,type);
     }
 
+    public Map<String, Promotion> getPromotions() {
+        return promotions;
+    }
 
+    public Map<String, ProductDefault> getDefaultProducts() {
+        return defaultProducts;
+    }
+
+    public Map<String, ProductPromotion> getPromotionProducts() {
+        return promotionProducts;
+    }
 }
