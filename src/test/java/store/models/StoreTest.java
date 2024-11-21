@@ -3,6 +3,7 @@ package store.models;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -38,5 +39,25 @@ public class StoreTest {
         assertThat(store.promotions.get("반짝할인"))
                 .usingRecursiveComparison()
                 .isEqualTo(expected.get("반짝할인"));
+    }
+
+    @Test
+    @DisplayName("제품 저장 테스트")
+    void testSetProductReadPromotionProduct(){
+        Store store = new Store();
+
+        ProductDefault expectedDefaultProduct = new ProductDefault("콜라",1000,10);
+        ProductPromotion expectedPromotionProduct =  new ProductPromotion("콜라",1000,10,"탄산2+1");
+
+        store.setDefaultOrPromotionProducts(List.of("콜라","1000","10","탄산2+1"));
+        store.setDefaultOrPromotionProducts(List.of("콜라","1000","10","null"));
+
+        assertThat(store.defaultProducts.get("콜라"))
+                .usingRecursiveComparison()
+                .isEqualTo(expectedDefaultProduct);
+
+        assertThat(store.promotionProducts.get("콜라"))
+                .usingRecursiveComparison()
+                .isEqualTo(expectedPromotionProduct);
     }
 }
