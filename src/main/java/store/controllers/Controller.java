@@ -7,6 +7,7 @@ import store.models.Promotion;
 import store.models.Store;
 import store.utils.FileUtil;
 import store.utils.StringUtil;
+import store.views.Input;
 import store.views.Output;
 
 public class Controller {
@@ -24,6 +25,7 @@ public class Controller {
     public void run() throws IOException {
         init();
         welcome();
+        order();
     }
 
     public void init() throws IOException {
@@ -51,5 +53,9 @@ public class Controller {
     public void welcome(){
         Output.printWelcome();
         Output.printProducts(store.getDefaultProducts(),store.getPromotionProducts());
+    }
+
+    public void order(){
+        Input.readOrder();
     }
 }
