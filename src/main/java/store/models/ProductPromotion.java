@@ -7,4 +7,8 @@ public class ProductPromotion extends Product{
         super(name,price,stock);
         this.type = type;
     }
+
+    public String getType() {
+        return type;
+    }
 }
