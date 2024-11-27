@@ -34,4 +34,27 @@ public class ValidatorTest {
         }
 
     }
+
+    @Test
+    @DisplayName("주문 입력 체크 - 올바른 형식으로 입력했는가")
+    void order_check_valid_form() {
+        //Given
+        Validator validator = new Validator();
+        ErrorGroup error = ErrorGroup.EMPTY;
+        List<String> cases = new ArrayList<>();
+
+        cases.add("[콜라-3],[에너지바-5]");
+        cases.add("[콜라-3]");
+        cases.add("[비타500-3]");
+        cases.add("[2%-3]");
+        cases.add("[TestJuice-3]");
+
+        for (String testCase : cases) {
+            ErrorGroup errorGroup = validator.order(testCase);
+            assertEquals(errorGroup, error, "퉤:" + testCase);
+        }
+
+    }
+
+
 }
