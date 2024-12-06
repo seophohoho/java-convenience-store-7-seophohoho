@@ -1,2 +1,5 @@
-package store.service;public class OrderService {
+package store.service;
+
+public class OrderService {
+
 }

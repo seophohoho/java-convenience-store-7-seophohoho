@@ -1,4 +1,4 @@
-package store.models;
+package store.dto;
 
 import java.util.Arrays;
 
