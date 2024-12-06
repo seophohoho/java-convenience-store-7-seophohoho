@@ -23,4 +23,8 @@ public enum ErrorGroup {
                 .findAny()
                 .orElse(EMPTY);
     }
+
+    public String getMessage() {
+        return message;
+    }
 }
